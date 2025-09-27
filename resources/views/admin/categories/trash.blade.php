@@ -1,15 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="mb-4">
-    <a href="{{ route('admin.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Create Category
-    </a>
-    <a href="{{ route('admin.categories.trash') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-        View Trash
-    </a>
-</div>
-
 <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -23,7 +14,7 @@
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            @forelse ($categories as $category)
+            @forelse ($trashedCategories as $category)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-gray-900">{{ $category->name }}</div>
@@ -31,22 +22,19 @@
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {{-- <a href="{{ route('admin.categories.show', $category) }}"
-                        class="text-green-600 hover:text-green-900 mr-3">
-                        View
-                    </a> --}}
+                    <form action="{{ route('admin.categories.restore', $category->id) }}" method="POST" class="inline-block">
+                        @csrf
+                        <button type="submit" class="text-green-600 hover:text-green-900">
+                            Restore
+                        </button>
+                    </form>
 
-                    <a href="{{ route('admin.categories.edit', $category) }}"
-                        class="text-indigo-600 hover:text-indigo-900 mr-3">
-                        Edit
-                    </a>
-
-                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block"
-                        onsubmit="return confirm('Are you sure you want to soft delete this category?');">
+                    <form action="{{ route('admin.categories.force-delete', $category->id) }}" method="POST" class="inline-block"
+                        onsubmit="return confirm('Are you sure you want to permanently delete this category?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:text-red-900">
-                            Delete
+                            Delete Permanently
                         </button>
                     </form>
                 </td>
@@ -54,7 +42,7 @@
             @empty
             <tr>
                 <td colspan="2" class="px-6 py-4 text-center text-gray-500">
-                    No active categories found.
+                    No trashed categories found.
                 </td>
             </tr>
             @endforelse
@@ -63,6 +51,6 @@
 </div>
 
 <div class="mt-4">
-    {{ $categories->links() }}
+    {{ $trashedCategories->links() }}
 </div>
 @endsection
