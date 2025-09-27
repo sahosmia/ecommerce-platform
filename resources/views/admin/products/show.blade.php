@@ -4,7 +4,7 @@
 
 @section('header')
 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-    {{ __('Product Details: ') . $product->name }}
+    Product Details: {{ $product->name }}
 </h2>
 @endsection
 
@@ -14,18 +14,18 @@
 
         <div class="flex justify-between items-center mb-6 border-b pb-4">
             <a href="{{ route('admin.products.index') }}" class="text-indigo-600 hover:text-indigo-900 font-medium">
-                &larr; {{ __('Back to Product List') }}
+                &larr; Back to Product List
             </a>
             <a href="{{ route('admin.products.edit', $product) }}"
                 class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-150">
-                {{ __('Edit Product') }}
+                Edit Product
             </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             <div class="md:col-span-1">
-                <h3 class="text-lg font-semibold mb-3">{{ __('Image') }}</h3>
+                <h3 class="text-lg font-semibold mb-3">Image</h3>
                 <div class="w-full bg-gray-200 rounded-lg overflow-hidden shadow-lg">
                     {{-- Assuming you have an image_url Accessor in your Product Model --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-auto object-cover">
@@ -43,7 +43,7 @@
 
                 <div class="border-t pt-4">
                     <p class="text-sm text-gray-700">
-                        <strong>{{ __('Category:') }}</strong>
+                        <strong>Category:</strong>
                         @if($product->category)
                         <a href="{{ route('admin.categories.show', $product->category) }}"
                             class="font-medium text-indigo-600 hover:text-indigo-800 hover:underline">
@@ -55,7 +55,7 @@
                     </p>
 
                     <p class="text-sm text-gray-700 mt-1">
-                        <strong>{{ __('Subcategory:') }}</strong>
+                        <strong>Subcategory:</strong>
                         @if($product->subcategory)
                         <a href="{{ route('admin.subcategories.show', $product->subcategory) }}"
                             class="font-medium text-indigo-600 hover:text-indigo-800 hover:underline">
@@ -69,7 +69,7 @@
 
                 <div class="border-t pt-4">
                     <div>
-                        <h4 class="text-xl font-semibold mb-2">{{ __('Pricing') }}</h4>
+                        <h4 class="text-xl font-semibold mb-2">Pricing</h4>
 
                         @if($product->discount_value > 0)
 
@@ -78,11 +78,11 @@
                         </p>
 
                         <p class="text-sm text-gray-500 line-through">
-                            {{ __('Regular Price:') }} {{ number_format($product->price, 2) }} BDT
+                            Regular Price: {{ number_format($product->price, 2) }} BDT
                         </p>
 
                         <p class="text-sm text-red-600 mt-2">
-                            <strong>{{ __('Discount:') }}</strong>
+                            <strong>Discount:</strong>
                             {{ $product->discount_type == 'percentage' ? $product->discount_value . '%' :
                             number_format($product->discount_value, 2) . ' BDT Fixed' }}
                         </p>
@@ -92,14 +92,14 @@
                             {{ number_format($product->price, 2) }} BDT
                         </p>
                         <p class="text-sm text-gray-500 mt-2">
-                            {{ __('No discount applied.') }}
+                            No discount applied.
                         </p>
                         @endif
 
                     </div>
 
                     <div class="border-t pt-4">
-                        <h4 class="text-xl font-semibold mb-2">{{ __('Description') }}</h4>
+                        <h4 class="text-xl font-semibold mb-2">Description</h4>
                         <div class="text-gray-700 leading-relaxed">
                             {{ $product->description ?? 'No description provided.' }}
                         </div>

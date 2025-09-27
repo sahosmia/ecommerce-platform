@@ -4,7 +4,7 @@
 
 @section('header')
 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-    {{ __('Edit Product: ') . $product->name }}
+    Edit Product: {{ $product->name }}
 </h2>
 @endsection
 
@@ -19,18 +19,17 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Product Name') }}</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" required
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     @error('name') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-700">{{ __('Category')
-                        }}</label>
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                     <select name="category_id" id="category_id" required
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <option value="">{{ __('Select Category') }}</option>
+                        <option value="">Select Category</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) ==
                             $category->id ? 'selected' : '' }}>
@@ -53,12 +52,11 @@
                 </div>
             </div>
 
-            <h3 class="text-lg font-semibold border-b pb-2 mb-4">{{ __('Pricing') }}</h3>
+            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Pricing</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
                 <div>
-                    <label for="price" class="block text-sm font-medium text-gray-700">{{ __('Regular Price')
-                        }}</label>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Regular Price</label>
                     <input type="number" step="0.01" name="price" id="price" value="{{ old('price', $product->price) }}"
                         required
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -66,8 +64,7 @@
                 </div>
 
                 <div>
-                    <label for="discount_type" class="block text-sm font-medium text-gray-700">{{ __('Discount Type')
-                        }}</label>
+                    <label for="discount_type" class="block text-sm font-medium text-gray-700">Discount Type</label>
                     <select name="discount_type" id="discount_type" required
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <option value="percentage" {{ old('discount_type', $product->discount_type) == 'percentage' ?
@@ -79,8 +76,8 @@
                 </div>
 
                 <div>
-                    <label for="discount_value" class="block text-sm font-medium text-gray-700">{{ __('Discount Value
-                        (Optional)') }}</label>
+                    <label for="discount_value" class="block text-sm font-medium text-gray-700">Discount Value
+                        (Optional)</label>
                     <input type="number" step="0.01" name="discount_value" id="discount_value"
                         value="{{ old('discount_value', $product->discount_value) }}"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -88,26 +85,26 @@
                 </div>
             </div>
 
-            <h3 class="text-lg font-semibold border-b pb-2 mb-4">{{ __('Description & Media') }}</h3>
+            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Description & Media</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                 <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Description
-                        (Optional)') }}</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description
+                        (Optional)</label>
                     <textarea name="description" id="description" rows="4"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('description', $product->description) }}</textarea>
                     @error('description') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">{{ __('Change Product Image (Max
-                        2MB)') }}</label>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Change Product Image (Max
+                        2MB)</label>
                     <input type="file" name="image" id="image" accept="image/*"
                         class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                     @error('image') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
 
                     @if($product->image)
-                    <p class="mt-3 text-sm text-gray-500">{{ __('Current Image:') }}</p>
+                    <p class="mt-3 text-sm text-gray-500">Current Image:</p>
                     {{-- Assuming you have an image_url Accessor --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                         class="w-20 h-20 object-cover rounded mt-1 border">
@@ -118,10 +115,10 @@
             <div class="mt-6">
                 <button type="submit"
                     class="px-6 py-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 transition duration-150">
-                    {{ __('Update Product') }}
+                    Update Product
                 </button>
                 <a href="{{ route('admin.products.index') }}" class="ml-4 text-gray-600 hover:text-gray-900">
-                    {{ __('Cancel') }}
+                    Cancel
                 </a>
             </div>
         </form>
