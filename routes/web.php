@@ -51,9 +51,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
 
 
-    Route::get('subcategories/trash', [ProductController::class, 'trash'])->name('subcategories.trash');
-    Route::post('subcategories/{id}/restore', [ProductController::class, 'restore'])->name('subcategories.restore');
-    Route::delete('subcategories/{id}/force-delete', [ProductController::class, 'forceDelete'])->name('subcategories.force-delete');
+    Route::get('subcategories/trash', [SubcategoryController::class, 'trash'])->name('subcategories.trash');
+    Route::post('subcategories/{id}/restore', [SubcategoryController::class, 'restore'])->name('subcategories.restore');
+    Route::delete('subcategories/{id}/force-delete', [SubcategoryController::class, 'forceDelete'])->name('subcategories.force-delete');
     Route::resource('subcategories', SubcategoryController::class);
 
     Route::get('products/trash', [ProductController::class, 'trash'])->name('products.trash');
