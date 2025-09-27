@@ -10,19 +10,19 @@
         <thead class="bg-gray-50">
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Image') }}
+                    Image
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Name / Slug') }}
+                    Name / Slug
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Category') }}
+                    Category
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Price (New/Old)') }}
+                    Price (New/Old)
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{ __('Actions') }}
+                    Actions
                 </th>
             </tr>
         </thead>
@@ -71,7 +71,7 @@
                         onsubmit="return confirm('Are you sure you want to restore this product?');">
                         @csrf
                         <button type="submit" class="text-green-600 hover:text-green-900 font-bold">
-                            {{ __('Restore') }}
+                            Restore
                         </button>
                     </form>
 
@@ -81,7 +81,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:text-red-900">
-                            {{ __('Permanent Delete') }}
+                            Permanent Delete
                         </button>
                     </form>
                 </td>
@@ -89,7 +89,7 @@
             @empty
             <tr>
                 <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                    {{ __('No active products found.') }}
+                    No active products found.
                 </td>
             </tr>
             @endforelse
