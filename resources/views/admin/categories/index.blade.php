@@ -1,11 +1,23 @@
 @extends('layouts.admin')
 
+@section('title', 'Categories')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Manage Categories
+    </h2>
+</div>
+@endsection
+
 @section('content')
 <div class="mb-4 flex gap-2">
-    <a href="{{ route('admin.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <a href="{{ route('admin.categories.create') }}"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Create Category
     </a>
-    <a href="{{ route('admin.categories.trash') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+    <a href="{{ route('admin.categories.trash') }}"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         View Trash
     </a>
 </div>

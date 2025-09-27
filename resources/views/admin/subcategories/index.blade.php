@@ -1,5 +1,15 @@
 @extends('layouts.admin')
 
+@section('title', 'Subcategories')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Manage Subcategories
+    </h2>
+</div>
+@endsection
+
 @section('content')
 <div class="mb-4 flex gap-2">
     <a href="{{ route('admin.subcategories.create') }}"

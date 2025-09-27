@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>eCommerce</title>
+    <title>@yield('title', 'eCommerce')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<body class="bg-gray-100 font-sans leading-normal tracking-normal flex flex-col min-h-screen">
 
-    <nav class="bg-white shadow-lg">
+    <header class="bg-white shadow-lg">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
                 <div>
@@ -65,15 +65,15 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="my-8">
+    <main class="flex-grow my-8">
         <div class="container mx-auto px-6">
             @yield('content')
         </div>
     </main>
 
-    <footer class="bg-white shadow-lg mt-8">
+    <footer class="bg-white shadow-lg">
         <div class="container mx-auto px-6 py-4">
             <div class="text-center">
                 <p class="text-gray-600">© 2024 eCommerce. All rights reserved.</p>
