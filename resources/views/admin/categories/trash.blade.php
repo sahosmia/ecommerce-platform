@@ -1,5 +1,19 @@
 @extends('layouts.admin')
 
+@section('title', 'Trashed Categories')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Trashed Categories
+    </h2>
+    <a href="{{ route('admin.categories.index') }}"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Categories
+    </a>
+</div>
+@endsection
+
 @section('content')
 <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">

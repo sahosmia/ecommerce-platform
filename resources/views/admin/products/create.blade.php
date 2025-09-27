@@ -3,9 +3,15 @@
 @section('title', 'Create New Product')
 
 @section('header')
-<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-    Add New Product
-</h2>
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Add New Product
+    </h2>
+    <a href="{{ route('admin.products.index') }}"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Products
+    </a>
+</div>
 @endsection
 
 @section('content')
