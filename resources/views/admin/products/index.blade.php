@@ -1,7 +1,16 @@
 @extends('layouts.admin')
 
+@section('title', 'Products')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Manage Products
+    </h2>
+</div>
+@endsection
+
 @section("content")
-{{-- Assumes you have already extended the layout: @extends('layouts.admin') and are inside @section('content') --}}
 
 {{-- ... Header, Messages, and Buttons section here ... --}}
 

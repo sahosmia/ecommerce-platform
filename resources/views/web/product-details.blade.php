@@ -1,5 +1,7 @@
 @extends('layouts.web')
 
+@section('title', $product->name)
+
 @section('content')
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="md:flex">
@@ -30,18 +32,7 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Related Products</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 @foreach($relatedProducts as $relatedProduct)
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <a href="{{ route('product.details', $relatedProduct->slug) }}">
-                            <img src="{{ $relatedProduct->image_url }}" alt="{{ $relatedProduct->name }}" class="w-full h-48 object-cover">
-                        </a>
-                        <div class="p-4">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $relatedProduct->name }}</h2>
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-bold text-gray-900">${{ $relatedProduct->new_price }}</span>
-                                <a href="{{ route('product.details', $relatedProduct->slug) }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">View</a>
-                            </div>
-                        </div>
-                    </div>
+                    <x-product-card :product="$relatedProduct" />
                 @endforeach
             </div>
         </div>

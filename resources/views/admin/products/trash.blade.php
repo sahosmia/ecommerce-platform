@@ -1,7 +1,20 @@
 @extends('layouts.admin')
 
+@section('title', 'Trashed Products')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Trashed Products
+    </h2>
+    <a href="{{ route('admin.products.index') }}"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Products
+    </a>
+</div>
+@endsection
+
 @section("content")
-{{-- Assumes you have already extended the layout: @extends('layouts.admin') and are inside @section('content') --}}
 
 {{-- ... Header, Messages, and Buttons section here ... --}}
 
