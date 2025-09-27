@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="mb-4">
-    <a href="{{ route('admin.subcategories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+<div class="mb-4 flex gap-2">
+    <a href="{{ route('admin.subcategories.create') }}"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Create Subcategory
     </a>
-    <a href="{{ route('admin.subcategories.trash') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+    <a href="{{ route('admin.subcategories.trash') }}"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         View Trash
     </a>
 </div>
@@ -48,7 +50,8 @@
                         Edit
                     </a>
 
-                    <form action="{{ route('admin.subcategories.destroy', $subcategory) }}" method="POST" class="inline-block"
+                    <form action="{{ route('admin.subcategories.destroy', $subcategory) }}" method="POST"
+                        class="inline-block"
                         onsubmit="return confirm('Are you sure you want to soft delete this subcategory?');">
                         @csrf
                         @method('DELETE')

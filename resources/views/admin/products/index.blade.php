@@ -5,6 +5,17 @@
 
 {{-- ... Header, Messages, and Buttons section here ... --}}
 
+
+<div class="mb-4 flex gap-2">
+    <a href="{{ route('admin.products.create') }}"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Product
+    </a>
+    <a href="{{ route('admin.products.trash') }}"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        View Trash
+    </a>
+</div>
 <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
