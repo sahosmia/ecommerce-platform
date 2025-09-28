@@ -16,7 +16,6 @@
 
 @section("content")
 
-{{-- ... Header, Messages, and Buttons section here ... --}}
 
 <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
@@ -43,7 +42,6 @@
             @forelse ($trashedProducts as $product)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    {{-- Assuming you have an image_url Accessor in your Product Model --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                         class="w-12 h-12 object-cover rounded">
                 </td>

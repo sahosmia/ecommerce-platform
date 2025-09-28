@@ -3,9 +3,15 @@
 @section('title', 'Edit Product')
 
 @section('header')
-<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-    Edit Product: {{ $product->name }}
-</h2>
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Edit Product: {{ $product->name }}
+    </h2>
+    <a href="{{ route('admin.products.index') }}"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Products
+    </a>
+</div>
 @endsection
 
 @section('content')
@@ -14,7 +20,7 @@
 
         <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT') {{-- 🚨 Crucial for Update operation --}}
+            @method('PUT')
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
@@ -105,7 +111,6 @@
 
                     @if($product->image)
                     <p class="mt-3 text-sm text-gray-500">Current Image:</p>
-                    {{-- Assuming you have an image_url Accessor --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                         class="w-20 h-20 object-cover rounded mt-1 border">
                     @endif

@@ -26,7 +26,6 @@ class ProductSeeder extends Seeder
 
 
         $productsData = [
-            // ইলেকট্রনিক্স পণ্য
             [
                 'name' => 'Flagship Smartphone X',
                 'category_id' => $electronicsId,

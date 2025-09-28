@@ -27,7 +27,6 @@
             <div class="md:col-span-1">
                 <h3 class="text-lg font-semibold mb-3">Image</h3>
                 <div class="w-full bg-gray-200 rounded-lg overflow-hidden shadow-lg">
-                    {{-- Assuming you have an image_url Accessor in your Product Model --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-auto object-cover">
                 </div>
             </div>

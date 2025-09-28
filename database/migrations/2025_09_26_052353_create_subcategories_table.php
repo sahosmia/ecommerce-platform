@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-                    $table->unique(['category_id', 'slug']);
+            $table->unique(['category_id', 'slug']);
 
         });
     }
