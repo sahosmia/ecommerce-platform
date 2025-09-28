@@ -15,7 +15,7 @@ class SubcategoryUpdateRequest extends FormRequest
         return true;
     }
 
-     // Prepare for validation
+    // Prepare for validation
     protected function prepareForValidation(): void
     {
         $this->merge([
@@ -23,7 +23,7 @@ class SubcategoryUpdateRequest extends FormRequest
         ]);
     }
 
-// Rules
+    // Rules
     public function rules(): array
     {
         $subcategoryId = $this->route('subcategory');
@@ -46,7 +46,7 @@ class SubcategoryUpdateRequest extends FormRequest
         ];
     }
 
-   // Messages
+    // Messages
     public function messages(): array
     {
         return [

@@ -2,6 +2,18 @@
 
 @section('title', 'Create New Subcategory')
 
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Create Subcategory
+    </h2>
+    <a href="{{ route('admin.subcategories.index') }}"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+        Back to Subcategories
+    </a>
+</div>
+@endsection
+
 @section('content')
 <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 py-6">
     <div class="bg-white shadow-md sm:rounded-lg p-6">

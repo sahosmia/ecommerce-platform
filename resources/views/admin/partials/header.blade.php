@@ -21,7 +21,7 @@
             <a href="{{ route('profile.edit') }}"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
 
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Edit</a>
+
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

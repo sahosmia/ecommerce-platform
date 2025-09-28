@@ -25,4 +25,13 @@ class Subcategory extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+       protected static function booted(): void
+    {
+        static::deleting(function (Subcategory $subcategory) {
+            if ($subcategory->isForceDeleting()) {
+                $subcategory->products()->withTrashed()->get()->each->forceDelete();
+            }
+        });
+    }
 }

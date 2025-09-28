@@ -19,7 +19,6 @@ class ProductSeeder extends Seeder
         $subcategories = Subcategory::all()->keyBy('name');
 
         $productsData = [
-            // Electronics (10)
             [
                 'name' => 'Smartphone Pro X', 'category_id' => $categories['Electronics']->id, 'subcategory_id' => $subcategories['Smartphones']->id,
                 'description' => 'The latest smartphone with a stunning display and pro-grade camera system.', 'image' => 'electronics/smartphone_pro_x.jpg', 'price' => 99999.00,

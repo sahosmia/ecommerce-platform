@@ -9,9 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
 
-
-
-
 class Product extends Model
 {
     use SoftDeletes;
@@ -67,12 +64,15 @@ class Product extends Model
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                // Check if the image path is available in the database
-                if ($attributes['image']) {
-                    return Storage::url('products/' . $attributes['image']);
-                }
-                return asset('images/default-product.png');
-            },
+            $imageName = $attributes['image'] ?? null;
+            $imagePath = 'products/' . $imageName;
+
+            if ($imageName && Storage::disk('public')->exists($imagePath)) {
+                return Storage::url($imagePath);
+            }
+
+            return asset('images/default-product.png');
+        },
         );
     }
 

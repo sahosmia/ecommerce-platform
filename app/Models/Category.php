@@ -13,7 +13,6 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug'];
 
-
     // Subcategory
     public function subcategories(): HasMany
     {
@@ -24,5 +23,15 @@ class Category extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Category $category) {
+            if ($category->isForceDeleting()) {
+                $category->subcategories()->withTrashed()->get()->each->forceDelete();
+                $category->products()->withTrashed()->get()->each->forceDelete();
+            }
+        });
     }
 }

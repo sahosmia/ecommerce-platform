@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function getSubcategories($categoryId)
     {
         $subcategories = Subcategory::where('category_id', $categoryId)
-                                    ->get(['id', 'name']);
+            ->get(['id', 'name']);
 
         return response()->json($subcategories);
     }

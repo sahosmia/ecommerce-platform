@@ -60,7 +60,7 @@ class ProductUpdateRequest extends FormRequest
 
             'slug.unique' => 'This product name generates a slug that already exists. Please modify the product name.',
 
-            // 'image.image' => 'The file must be a valid image format.',
+            'image.image' => 'The file must be a valid image format.',
             'image.max' => 'The image size must not exceed 2 MB.',
 
             'price.required' => 'The price is required.',

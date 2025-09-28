@@ -1,10 +1,26 @@
 @extends('layouts.admin')
 
+@section('title', 'Products')
+
+@section('header')
+<div class="flex justify-between items-center">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Manage Products
+    </h2>
+</div>
+@endsection
+
 @section("content")
-{{-- Assumes you have already extended the layout: @extends('layouts.admin') and are inside @section('content') --}}
-
-{{-- ... Header, Messages, and Buttons section here ... --}}
-
+<div class="mb-4 flex gap-2">
+    <a href="{{ route('admin.products.create') }}"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Create Product
+    </a>
+    <a href="{{ route('admin.products.trash') }}"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        View Trash
+    </a>
+</div>
 <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -30,7 +46,6 @@
             @forelse ($products as $product)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    {{-- Assuming you have an image_url Accessor in your Product Model --}}
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                         class="w-12 h-12 object-cover rounded">
                 </td>

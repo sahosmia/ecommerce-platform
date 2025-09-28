@@ -11,11 +11,9 @@
         {{-- Dashboard --}}
         <a href="{{ route('admin.dashboard') }}"
             class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700 transition">
-            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-10v10a1 1 0 001 1h3m-10 0h3m-3 0h-3m3-3h.01">
-                </path>
-            </svg>
+            <div class="w-6 h-6 mr-3">
+                <i class="fa-solid fa-house"></i>
+            </div>
             <span>Dashboard</span>
         </a>
 
@@ -24,10 +22,9 @@
             <button @click="open = !open"
                 class="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-700 transition">
                 <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
+                    <div class="w-6 h-6 mr-3">
+                        <i class="fa-solid fa-table-cells-large"></i>
+                    </div>
                     <span>Categories</span>
                 </div>
                 <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none"
@@ -51,10 +48,9 @@
             <button @click="open = !open"
                 class="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-700 transition">
                 <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
+                    <div class="w-6 h-6 mr-3">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
                     <span>Subcategories</span>
                 </div>
                 <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none"
@@ -78,10 +74,9 @@
             <button @click="open = !open"
                 class="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-700 transition">
                 <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
+                    <div class="w-6 h-6 mr-3">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
                     <span>Products</span>
                 </div>
                 <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none"
