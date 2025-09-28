@@ -35,6 +35,16 @@
                         @endif
                     </div>
                     @endforeach
+
+                    @auth
+                    <a class="text-gray-600 hover:text-gray-700 mx-4" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-gray-600 hover:text-gray-700 mx-4">Logout</button>
+                    </form>
+                        @else
+                        <a class="text-gray-600 hover:text-gray-700 mx-4" href="{{ route('login') }}">Login</a>
+                    @endauth
                 </div>
             </div>
         </div>

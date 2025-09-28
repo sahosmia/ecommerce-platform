@@ -57,7 +57,7 @@ class Product extends Model
                     $newPrice = $originalPrice - $discountValue;
                 }
 
-                return max(0, round($newPrice, 2)); // নেগেটিভ দাম এড়িয়ে যেতে
+                return max(0, round($newPrice, 2));
             },
         );
     }
@@ -69,11 +69,8 @@ class Product extends Model
             get: function ($value, $attributes) {
                 // Check if the image path is available in the database
                 if ($attributes['image']) {
-                    // Assuming images are stored in the 'public' disk under a 'products' folder
                     return Storage::url('products/' . $attributes['image']);
                 }
-
-                // If 'image' is null, return the path to a default placeholder image
                 return asset('images/default-product.png');
             },
         );

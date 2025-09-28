@@ -19,6 +19,8 @@ class CategorySeeder extends Seeder
             'Clothing & Fashion',
             'Home & Kitchen',
             'Sports & Outdoors',
+            'Books & Media',
+
         ];
 
         foreach ($categories as $categoryName) {

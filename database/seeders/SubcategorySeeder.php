@@ -18,8 +18,10 @@ class SubcategorySeeder extends Seeder
     {
         $categoryMap = [
             'Electronics' => ['Smartphones', 'Laptops', 'Headphones', 'Cameras'],
-            'Clothing & Fashion' => ['Men\'s Wear', 'Women\'s Wear', 'Accessories'],
-            'Home & Kitchen' => ['Cookware', 'Furniture', 'Small Appliances'],
+            'Clothing & Fashion' => ['Men\'s Wear', 'Women\'s Wear', 'Accessories', 'Footwear'],
+            'Home & Kitchen' => ['Cookware', 'Furniture', 'Small Appliances', 'Home Decor'],
+            'Sports & Outdoors' => ['Fitness Equipment', 'Camping Gear', 'Athletic Apparel', 'Cycling'],
+            'Books & Media' => ['Fiction', 'Non-Fiction', 'Comics', 'Music & Movies'],
         ];
 
         foreach ($categoryMap as $categoryName => $subcategories) {
