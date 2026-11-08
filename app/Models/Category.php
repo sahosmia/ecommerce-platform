@@ -29,9 +29,8 @@ class Category extends Model
     protected static function booted(): void
     {
         static::deleting(function (Category $category) {
-            if ($category->isForceDeleting()) {
-                $category->subcategories()->withTrashed()->get()->each->forceDelete();
-                $category->products()->withTrashed()->get()->each->forceDelete();
+            if ($category->isForceDeleting() && ($category->subcategories()->withTrashed()->exists() || $category->products()->withTrashed()->exists())) {
+                return false;
             }
         });
     }
