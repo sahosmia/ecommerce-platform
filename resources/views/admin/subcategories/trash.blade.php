@@ -29,21 +29,23 @@
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <form action="{{ route('admin.subcategories.restore', $subcategory->id) }}" method="POST" class="inline-block">
-                        @csrf
-                        <button type="submit" class="text-green-600 hover:text-green-900">
-                            Restore
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-3">
+                        <form action="{{ route('admin.subcategories.restore', $subcategory->id) }}" method="POST" class="inline-block">
+                            @csrf
+                            <button type="submit" class="text-green-600 hover:text-green-900" title="Restore Subcategory">
+                                <i class="fa-solid fa-rotate-left text-base"></i>
+                            </button>
+                        </form>
 
-                    <form action="{{ route('admin.subcategories.force-delete', $subcategory->id) }}" method="POST" class="inline-block"
-                        onsubmit="return confirm('Are you sure you want to permanently delete this subcategory?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">
-                            Delete Permanently
-                        </button>
-                    </form>
+                        <form action="{{ route('admin.subcategories.force-delete', $subcategory->id) }}" method="POST" class="inline-block"
+                            onsubmit="return confirm('Are you sure you want to permanently delete this subcategory?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900" title="Delete Permanently">
+                                <i class="fa-solid fa-trash-can text-base"></i>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty

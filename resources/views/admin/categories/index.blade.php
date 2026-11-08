@@ -43,24 +43,28 @@
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <a href="{{ route('admin.categories.show', $category) }}"
-                        class="text-green-600 hover:text-green-900 mr-3">
-                        View
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('admin.categories.show', $category) }}"
+                            class="text-green-600 hover:text-green-900"
+                            title="View Category">
+                            <i class="fa-solid fa-eye text-base"></i>
+                        </a>
 
-                    <a href="{{ route('admin.categories.edit', $category) }}"
-                        class="text-indigo-600 hover:text-indigo-900 mr-3">
-                        Edit
-                    </a>
+                        <a href="{{ route('admin.categories.edit', $category) }}"
+                            class="text-indigo-600 hover:text-indigo-900"
+                            title="Edit Category">
+                            <i class="fa-solid fa-pen-to-square text-base"></i>
+                        </a>
 
-                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block"
-                        onsubmit="return confirm('Are you sure you want to soft delete this category?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">
-                            Delete
-                        </button>
-                    </form>
+                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block"
+                            onsubmit="return confirm('Are you sure you want to move this category to trash?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900" title="Move to Trash">
+                                <i class="fa-solid fa-trash text-base"></i>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
