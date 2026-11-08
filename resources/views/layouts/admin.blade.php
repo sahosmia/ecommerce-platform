@@ -10,6 +10,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     <style>
         .sidebar-transition {
@@ -64,69 +65,94 @@
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // SweetAlert2 Toast configuration
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer);
-                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-                }
-            });
+            // Configure Toastr options
+            if (typeof toastr !== 'undefined') {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-right',
+                    timeOut: 4000,
+                    extendedTimeOut: 1500,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut'
+                };
+            }
 
-            // Flash toast messages
+            // Flash toast notification helper
+            const showToast = (type, message) => {
+                if (!message) return;
+                if (typeof toastr !== 'undefined') {
+                    if (type === 'success') toastr.success(message);
+                    else if (type === 'error') toastr.error(message);
+                    else if (type === 'warning') toastr.warning(message);
+                    else toastr.info(message);
+                } else if (typeof Swal !== 'undefined') {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true
+                    });
+                    Toast.fire({ icon: type, title: message });
+                }
+            };
+
+            // Flash toast messages from session
             @if(session('success'))
-                Toast.fire({
-                    icon: 'success',
-                    title: "{{ session('success') }}"
-                });
+                showToast('success', @json(session('success')));
             @endif
 
             @if(session('error'))
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('error') }}"
-                });
+                showToast('error', @json(session('error')));
             @endif
 
             @if(session('warning'))
-                Toast.fire({
-                    icon: 'warning',
-                    title: "{{ session('warning') }}"
-                });
+                showToast('warning', @json(session('warning')));
             @endif
 
             @if(session('info'))
-                Toast.fire({
-                    icon: 'info',
-                    title: "{{ session('info') }}"
-                });
+                showToast('info', @json(session('info')));
             @endif
 
-            // Intercept delete buttons directly on click
-            document.addEventListener('click', function (e) {
-                const btn = e.target.closest('button[type="submit"], input[type="submit"]');
-                if (!btn) return;
+            @if(session('status'))
+                showToast('info', @json(session('status')));
+            @endif
 
-                const form = btn.closest('form');
-                if (!form) return;
+            @if(session('message'))
+                showToast('info', @json(session('message')));
+            @endif
+
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    showToast('error', @json($error));
+                @endforeach
+            @endif
+
+            // Intercept delete confirmations with SweetAlert2
+            const handleConfirmation = (form, event) => {
+                if (!form || form.dataset.confirmed === 'true') return;
 
                 const isDeleteMethod = form.querySelector('input[name="_method"][value="DELETE"]');
                 const hasConfirmAttr = form.hasAttribute('data-confirm-delete');
                 const hasDeleteClass = form.classList.contains('delete-form');
 
-                if ((isDeleteMethod || hasConfirmAttr || hasDeleteClass) && !form.dataset.confirmed) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                if (isDeleteMethod || hasConfirmAttr || hasDeleteClass) {
+                    if (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
 
-                    const isForceDelete = form.action.includes('force-delete');
-                    const title = form.getAttribute('data-swal-title') || (isForceDelete ? 'Permanently Delete Item?' : 'Move to Trash?');
+                    const isForceDelete = (form.action && form.action.includes('force-delete')) ||
+                        form.classList.contains('force-delete-form') ||
+                        form.hasAttribute('data-force-delete');
+
+                    const title = form.getAttribute('data-swal-title') ||
+                        (isForceDelete ? 'Permanently Delete Item?' : 'Move to Trash?');
                     const text = form.getAttribute('data-swal-text') || (
                         isForceDelete
                             ? 'This action CANNOT be undone! The item will be permanently deleted.'
@@ -137,22 +163,50 @@
                     );
                     const confirmButtonColor = isForceDelete ? '#dc2626' : '#e11d48';
 
-                    Swal.fire({
-                        title: title,
-                        text: text,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: confirmButtonColor,
-                        cancelButtonColor: '#6b7280',
-                        confirmButtonText: confirmButtonText,
-                        cancelButtonText: 'Cancel',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.dataset.confirmed = 'true';
-                            form.submit();
-                        }
-                    });
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: title,
+                            text: text,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: confirmButtonColor,
+                            cancelButtonColor: '#6b7280',
+                            confirmButtonText: confirmButtonText,
+                            cancelButtonText: 'Cancel',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.dataset.confirmed = 'true';
+                                form.submit();
+                            }
+                        });
+                    } else if (confirm(text)) {
+                        form.dataset.confirmed = 'true';
+                        form.submit();
+                    }
+                }
+            };
+
+            // Catch clicks on delete buttons
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('button[type="submit"], input[type="submit"]');
+                if (!btn) return;
+                const form = btn.closest('form');
+                if (form) {
+                    handleConfirmation(form, e);
+                }
+            }, true);
+
+            // Also catch direct form submit events as a fallback
+            document.addEventListener('submit', function (e) {
+                const form = e.target;
+                if (form && form.dataset.confirmed !== 'true') {
+                    const isDeleteMethod = form.querySelector('input[name="_method"][value="DELETE"]');
+                    const hasConfirmAttr = form.hasAttribute('data-confirm-delete');
+                    const hasDeleteClass = form.classList.contains('delete-form');
+                    if (isDeleteMethod || hasConfirmAttr || hasDeleteClass) {
+                        handleConfirmation(form, e);
+                    }
                 }
             }, true);
         });
