@@ -105,6 +105,12 @@ class SubcategoryController extends Controller
     public function forceDelete($id)
     {
         $subcategory = Subcategory::onlyTrashed()->findOrFail($id);
+
+        if ($subcategory->products()->withTrashed()->exists()) {
+            return redirect()->route('admin.subcategories.trash')
+                ->with('error', 'Subcategory cannot be permanently deleted because it has associated products.');
+        }
+
         $subcategory->forceDelete();
         return redirect()->route('admin.subcategories.trash')
             ->with('success', 'Subcategory permanently deleted.');

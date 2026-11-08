@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -134,5 +135,23 @@ class SubcategoryTest extends TestCase
         $response->assertRedirect(route('admin.subcategories.trash'));
         $response->assertSessionHas('success', 'Subcategory permanently deleted.');
         $this->assertDatabaseMissing('subcategories', ['id' => $subcategory->id]);
+    }
+
+    /** @test */
+    public function it_cannot_permanently_delete_a_subcategory_if_it_has_products()
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+        ]);
+        $subcategory->delete();
+
+        $response = $this->delete(route('admin.subcategories.force-delete', $subcategory->id));
+
+        $response->assertRedirect(route('admin.subcategories.trash'));
+        $response->assertSessionHas('error', 'Subcategory cannot be permanently deleted because it has associated products.');
+        $this->assertDatabaseHas('subcategories', ['id' => $subcategory->id]);
     }
 }

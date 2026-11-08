@@ -67,53 +67,75 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Flash messages
+            // SweetAlert2 Toast configuration
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+
+            // Flash toast messages
             @if(session('success'))
-                Swal.fire({
+                Toast.fire({
                     icon: 'success',
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true
+                    title: "{{ session('success') }}"
                 });
             @endif
 
             @if(session('error'))
-                Swal.fire({
+                Toast.fire({
                     icon: 'error',
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    confirmButtonColor: '#4f46e5'
+                    title: "{{ session('error') }}"
                 });
             @endif
 
-            // Global SweetAlert2 delete confirmation for forms with [data-confirm-delete] or class 'delete-form'
-            document.addEventListener('submit', function (e) {
-                const form = e.target;
+            @if(session('warning'))
+                Toast.fire({
+                    icon: 'warning',
+                    title: "{{ session('warning') }}"
+                });
+            @endif
+
+            @if(session('info'))
+                Toast.fire({
+                    icon: 'info',
+                    title: "{{ session('info') }}"
+                });
+            @endif
+
+            // Intercept delete buttons directly on click
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('button[type="submit"], input[type="submit"]');
+                if (!btn) return;
+
+                const form = btn.closest('form');
                 if (!form) return;
 
-                // Check if form should trigger SweetAlert
+                const isDeleteMethod = form.querySelector('input[name="_method"][value="DELETE"]');
                 const hasConfirmAttr = form.hasAttribute('data-confirm-delete');
                 const hasDeleteClass = form.classList.contains('delete-form');
-                const isDeleteMethod = form.querySelector('input[name="_method"][value="DELETE"]');
 
-                if ((hasConfirmAttr || hasDeleteClass || isDeleteMethod) && !form.dataset.confirmed) {
+                if ((isDeleteMethod || hasConfirmAttr || hasDeleteClass) && !form.dataset.confirmed) {
                     e.preventDefault();
-                    e.stopImmediatePropagation();
+                    e.stopPropagation();
 
-                    const title = form.getAttribute('data-swal-title') || 'Are you sure?';
+                    const isForceDelete = form.action.includes('force-delete');
+                    const title = form.getAttribute('data-swal-title') || (isForceDelete ? 'Permanently Delete Item?' : 'Move to Trash?');
                     const text = form.getAttribute('data-swal-text') || (
-                        form.action.includes('force-delete')
+                        isForceDelete
                             ? 'This action CANNOT be undone! The item will be permanently deleted.'
                             : 'This item will be moved to trash.'
                     );
                     const confirmButtonText = form.getAttribute('data-swal-confirm-text') || (
-                        form.action.includes('force-delete') ? 'Yes, delete forever!' : 'Yes, move to trash!'
+                        isForceDelete ? 'Yes, delete forever!' : 'Yes, move to trash!'
                     );
-                    const confirmButtonColor = form.action.includes('force-delete') ? '#dc2626' : '#e11d48';
+                    const confirmButtonColor = isForceDelete ? '#dc2626' : '#e11d48';
 
                     Swal.fire({
                         title: title,
