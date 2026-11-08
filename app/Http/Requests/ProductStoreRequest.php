@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 
 class ProductStoreRequest extends FormRequest
@@ -27,7 +28,12 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
+            'subcategory_id' => [
+                'required',
+                Rule::exists('subcategories', 'id')->where(function ($query) {
+                    return $query->where('category_id', $this->category_id);
+                }),
+            ],
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
 
