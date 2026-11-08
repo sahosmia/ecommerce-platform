@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ProductTest extends TestCase
 {
@@ -23,7 +24,7 @@ class ProductTest extends TestCase
         $this->actingAs($user);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_product_index_page()
     {
         $category = Category::factory()->create();
@@ -40,7 +41,7 @@ class ProductTest extends TestCase
         $response->assertSee($product->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_product_create_page()
     {
         $response = $this->get(route('admin.products.create'));
@@ -49,7 +50,7 @@ class ProductTest extends TestCase
         $response->assertViewIs('admin.products.create');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_a_new_product()
     {
         Storage::fake('public');
@@ -87,7 +88,7 @@ class ProductTest extends TestCase
         Storage::disk('public')->assertExists('products/' . $product->image);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_product_show_page()
     {
         $category = Category::factory()->create();
@@ -104,7 +105,7 @@ class ProductTest extends TestCase
         $response->assertSee($product->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_product_edit_page()
     {
         $category = Category::factory()->create();
@@ -121,7 +122,7 @@ class ProductTest extends TestCase
         $response->assertSee($product->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_product()
     {
         Storage::fake('public');
@@ -156,7 +157,7 @@ class ProductTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_soft_delete_a_product()
     {
         $category = Category::factory()->create();
@@ -173,7 +174,7 @@ class ProductTest extends TestCase
         $this->assertSoftDeleted('products', ['id' => $product->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_product_trash_page()
     {
         $category = Category::factory()->create();
@@ -191,7 +192,7 @@ class ProductTest extends TestCase
         $response->assertSee($product->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_restore_a_soft_deleted_product()
     {
         $category = Category::factory()->create();
@@ -209,7 +210,7 @@ class ProductTest extends TestCase
         $this->assertNotSoftDeleted('products', ['id' => $product->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_permanently_delete_a_product()
     {
         Storage::fake('public');
@@ -235,7 +236,7 @@ class ProductTest extends TestCase
         Storage::disk('public')->assertMissing('products/' . $imageName);
     }
 
-    /** @test */
+    #[Test]
     public function it_fails_validation_if_subcategory_does_not_belong_to_category()
     {
         $category1 = Category::factory()->create();

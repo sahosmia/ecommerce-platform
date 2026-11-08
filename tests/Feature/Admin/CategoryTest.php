@@ -3,9 +3,12 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CategoryTest extends TestCase
 {
@@ -20,7 +23,7 @@ class CategoryTest extends TestCase
         $this->actingAs($user);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_category_index_page()
     {
         Category::factory()->count(3)->create();
@@ -32,7 +35,7 @@ class CategoryTest extends TestCase
         $response->assertSee(Category::first()->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_category_create_page()
     {
         $response = $this->get(route('admin.categories.create'));
@@ -41,7 +44,7 @@ class CategoryTest extends TestCase
         $response->assertViewIs('admin.categories.create');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_a_new_category()
     {
         $data = [
@@ -55,7 +58,7 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas('categories', ['name' => 'New Category']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_category_edit_page()
     {
         $category = Category::factory()->create();
@@ -67,7 +70,7 @@ class CategoryTest extends TestCase
         $response->assertSee($category->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_category()
     {
         $category = Category::factory()->create();
@@ -82,7 +85,7 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas('categories', ['id' => $category->id, 'name' => 'Updated Category']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_soft_delete_a_category()
     {
         $category = Category::factory()->create();
@@ -94,7 +97,7 @@ class CategoryTest extends TestCase
         $this->assertSoftDeleted('categories', ['id' => $category->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_trash_page()
     {
         Category::factory()->create()->delete(); // Create a soft-deleted category
@@ -105,7 +108,7 @@ class CategoryTest extends TestCase
         $response->assertViewIs('admin.categories.trash');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_restore_a_soft_deleted_category()
     {
         $category = Category::factory()->create();
@@ -118,7 +121,7 @@ class CategoryTest extends TestCase
         $this->assertNotSoftDeleted('categories', ['id' => $category->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_permanently_delete_a_category()
     {
         $category = Category::factory()->create();
@@ -129,5 +132,37 @@ class CategoryTest extends TestCase
         $response->assertRedirect(route('admin.categories.trash'));
         $response->assertSessionHas('success', 'Category permanently deleted.');
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
+    }
+
+    #[Test]
+    public function it_cannot_permanently_delete_a_category_if_it_has_subcategories()
+    {
+        $category = Category::factory()->create();
+        Subcategory::factory()->create(['category_id' => $category->id]);
+        $category->delete();
+
+        $response = $this->delete(route('admin.categories.force-delete', $category->id));
+
+        $response->assertRedirect(route('admin.categories.trash'));
+        $response->assertSessionHas('error', 'Category cannot be permanently deleted because it has associated subcategories or products.');
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+    }
+
+    #[Test]
+    public function it_cannot_permanently_delete_a_category_if_it_has_products()
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+        ]);
+        $category->delete();
+
+        $response = $this->delete(route('admin.categories.force-delete', $category->id));
+
+        $response->assertRedirect(route('admin.categories.trash'));
+        $response->assertSessionHas('error', 'Category cannot be permanently deleted because it has associated subcategories or products.');
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
 }

@@ -3,10 +3,12 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class SubcategoryTest extends TestCase
 {
@@ -21,7 +23,7 @@ class SubcategoryTest extends TestCase
         $this->actingAs($user);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_subcategory_index_page()
     {
         Subcategory::factory()->count(3)->create();
@@ -33,7 +35,7 @@ class SubcategoryTest extends TestCase
         $response->assertSee(Subcategory::first()->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_subcategory_create_page()
     {
         $response = $this->get(route('admin.subcategories.create'));
@@ -42,7 +44,7 @@ class SubcategoryTest extends TestCase
         $response->assertViewIs('admin.subcategories.create');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_a_new_subcategory()
     {
         $category = Category::factory()->create();
@@ -58,7 +60,7 @@ class SubcategoryTest extends TestCase
         $this->assertDatabaseHas('subcategories', ['name' => 'New Subcategory']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_subcategory_edit_page()
     {
         $subcategory = Subcategory::factory()->create();
@@ -70,7 +72,7 @@ class SubcategoryTest extends TestCase
         $response->assertSee($subcategory->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_subcategory()
     {
         $subcategory = Subcategory::factory()->create();
@@ -87,7 +89,7 @@ class SubcategoryTest extends TestCase
         $this->assertDatabaseHas('subcategories', ['id' => $subcategory->id, 'name' => 'Updated Subcategory']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_soft_delete_a_subcategory()
     {
         $subcategory = Subcategory::factory()->create();
@@ -99,7 +101,7 @@ class SubcategoryTest extends TestCase
         $this->assertSoftDeleted('subcategories', ['id' => $subcategory->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_the_subcategory_trash_page()
     {
         Subcategory::factory()->create()->delete(); // Create a soft-deleted subcategory
@@ -110,7 +112,7 @@ class SubcategoryTest extends TestCase
         $response->assertViewIs('admin.subcategories.trash');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_restore_a_soft_deleted_subcategory()
     {
         $subcategory = Subcategory::factory()->create();
@@ -123,7 +125,7 @@ class SubcategoryTest extends TestCase
         $this->assertNotSoftDeleted('subcategories', ['id' => $subcategory->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_permanently_delete_a_subcategory()
     {
         $subcategory = Subcategory::factory()->create();
@@ -134,5 +136,23 @@ class SubcategoryTest extends TestCase
         $response->assertRedirect(route('admin.subcategories.trash'));
         $response->assertSessionHas('success', 'Subcategory permanently deleted.');
         $this->assertDatabaseMissing('subcategories', ['id' => $subcategory->id]);
+    }
+
+    #[Test]
+    public function it_cannot_permanently_delete_a_subcategory_if_it_has_products()
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+        ]);
+        $subcategory->delete();
+
+        $response = $this->delete(route('admin.subcategories.force-delete', $subcategory->id));
+
+        $response->assertRedirect(route('admin.subcategories.trash'));
+        $response->assertSessionHas('error', 'Subcategory cannot be permanently deleted because it has associated products.');
+        $this->assertDatabaseHas('subcategories', ['id' => $subcategory->id]);
     }
 }

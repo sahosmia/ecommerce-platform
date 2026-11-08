@@ -8,11 +8,14 @@ use App\Models\Subcategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+
+use PHPUnit\Framework\Attributes\Test;
+
 class WebProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_displays_products_organized_by_subcategories_on_home_page()
     {
         $category = Category::factory()->create(['name' => 'Tech']);
@@ -33,7 +36,7 @@ class WebProductTest extends TestCase
         $response->assertSee('Super Gaming Laptop');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_single_product_details_by_slug()
     {
         $category = Category::factory()->create();
@@ -51,7 +54,7 @@ class WebProductTest extends TestCase
         $response->assertSee('Ultra HD 4K Monitor');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_display_products_under_specific_subcategory()
     {
         $category = Category::factory()->create();
