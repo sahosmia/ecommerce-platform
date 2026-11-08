@@ -34,6 +34,10 @@ Route::get('/subcategory/{slug}', [WebSubcategoryController::class, 'showProduct
 | Admin Routes (CRUD Operations)
 |--------------------------------------------------------------------------
 */
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware('auth')->name('dashboard');
+
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

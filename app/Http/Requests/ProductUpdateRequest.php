@@ -26,11 +26,17 @@ class ProductUpdateRequest extends FormRequest
     // Rules
     public function rules(): array
     {
-        $productId = $this->route('product');
+        $product = $this->route('product');
+        $productId = is_object($product) ? $product->id : $product;
 
         return [
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
+            'subcategory_id' => [
+                'required',
+                Rule::exists('subcategories', 'id')->where(function ($query) {
+                    return $query->where('category_id', $this->category_id);
+                }),
+            ],
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
 
