@@ -8,8 +8,8 @@
         Subcategory: {{ $subcategory->name }}
     </h2>
     <a href="{{ route('admin.subcategories.index') }}"
-        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-        Back to Subcategories
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Subcategories
     </a>
 </div>
 @endsection
@@ -41,7 +41,10 @@
                 <li class="py-3 flex items-center justify-between">
                     <span class="text-gray-700">{{ $product->name }}</span>
                     <a href="{{ route('admin.products.show', $product) }}"
-                        class="text-blue-500 hover:underline">View</a>
+                        class="text-blue-600 hover:text-blue-900"
+                        title="View Product">
+                        <i class="fa-solid fa-eye text-base"></i>
+                    </a>
                 </li>
                 @endforeach
             </ul>
