@@ -9,17 +9,49 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    // public function index()
+    // {
+    //     $subcategories = Subcategory::with(['category', 'products' => function ($query) {
+    //         $query->latest();
+    //     }])
+    //     ->whereHas('products')
+    //     ->get();
+
+    //     $products = Product::latest()->get();
+    //     return view('web.home', compact('products', 'subcategories'));
+    // }
+
+
+
+
     public function index()
     {
-        $subcategories = Subcategory::with(['category', 'products' => function ($query) {
-            $query->latest();
-        }])
-        ->whereHas('products')
-        ->get();
+        $products = Product::with(['category', 'subcategory'])
+            ->whereHas('category')
+            ->whereHas('subcategory')
+            ->latest()
+            ->get();
 
-        $products = Product::latest()->get();
+        $subcategories = Subcategory::with([
+            'category',
+            'products' => function ($query) {
+                $query->whereHas('category')
+                    ->whereHas('subcategory')
+                    ->latest();
+            }
+        ])
+            ->whereHas('products', function ($query) {
+                $query->whereHas('category')
+                    ->whereHas('subcategory');
+            })
+            ->get();
+
+            return $products;
+
         return view('web.home', compact('products', 'subcategories'));
     }
+
+
 
     public function show($slug)
     {

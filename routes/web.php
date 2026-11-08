@@ -18,8 +18,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
+/*
+|--------------------------------------------------------------------------
+| Frontend Routes 
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [WebProductController::class, 'index'])->name('home');
 
 Route::get('/product/{slug}', [WebProductController::class, 'show'])->name('product.details');
@@ -34,25 +37,25 @@ Route::get('/subcategory/{slug}', [WebSubcategoryController::class, 'showProduct
 | Admin Routes (CRUD Operations)
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', function () {
-    return redirect()->route('admin.dashboard');
-})->middleware('auth')->name('dashboard');
-
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // category
+    // Route::get('/categories/check-slug', [CategoryController::class, 'checkSlug'])->name('categories.check-slug');
     Route::get('categories/trash', [CategoryController::class, 'trash'])->name('categories.trash');
     Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
     Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.force-delete');
     Route::resource('categories', CategoryController::class);
-
-
+    
+    // subcategory
+    // Route::get('/subcategories/check-slug', [SubcategoryController::class, 'checkSlug'])->name('subcategories.check-slug');
     Route::get('subcategories/trash', [SubcategoryController::class, 'trash'])->name('subcategories.trash');
     Route::post('subcategories/{id}/restore', [SubcategoryController::class, 'restore'])->name('subcategories.restore');
     Route::delete('subcategories/{id}/force-delete', [SubcategoryController::class, 'forceDelete'])->name('subcategories.force-delete');
     Route::resource('subcategories', SubcategoryController::class);
 
+    // product
     Route::get('products/trash', [ProductController::class, 'trash'])->name('products.trash');
     Route::post('products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])->name('products.force-delete');
