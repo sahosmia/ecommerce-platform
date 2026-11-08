@@ -3,6 +3,8 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -129,5 +131,37 @@ class CategoryTest extends TestCase
         $response->assertRedirect(route('admin.categories.trash'));
         $response->assertSessionHas('success', 'Category permanently deleted.');
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
+    }
+
+    /** @test */
+    public function it_cannot_permanently_delete_a_category_if_it_has_subcategories()
+    {
+        $category = Category::factory()->create();
+        Subcategory::factory()->create(['category_id' => $category->id]);
+        $category->delete();
+
+        $response = $this->delete(route('admin.categories.force-delete', $category->id));
+
+        $response->assertRedirect(route('admin.categories.trash'));
+        $response->assertSessionHas('error', 'Category cannot be permanently deleted because it has associated subcategories or products.');
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+    }
+
+    /** @test */
+    public function it_cannot_permanently_delete_a_category_if_it_has_products()
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+        ]);
+        $category->delete();
+
+        $response = $this->delete(route('admin.categories.force-delete', $category->id));
+
+        $response->assertRedirect(route('admin.categories.trash'));
+        $response->assertSessionHas('error', 'Category cannot be permanently deleted because it has associated subcategories or products.');
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
 }

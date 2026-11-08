@@ -64,6 +64,77 @@
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Flash messages
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: "{{ session('error') }}",
+                    confirmButtonColor: '#4f46e5'
+                });
+            @endif
+
+            // Global SweetAlert2 delete confirmation for forms with [data-confirm-delete] or class 'delete-form'
+            document.addEventListener('submit', function (e) {
+                const form = e.target;
+                if (!form) return;
+
+                // Check if form should trigger SweetAlert
+                const hasConfirmAttr = form.hasAttribute('data-confirm-delete');
+                const hasDeleteClass = form.classList.contains('delete-form');
+                const isDeleteMethod = form.querySelector('input[name="_method"][value="DELETE"]');
+
+                if ((hasConfirmAttr || hasDeleteClass || isDeleteMethod) && !form.dataset.confirmed) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    const title = form.getAttribute('data-swal-title') || 'Are you sure?';
+                    const text = form.getAttribute('data-swal-text') || (
+                        form.action.includes('force-delete')
+                            ? 'This action CANNOT be undone! The item will be permanently deleted.'
+                            : 'This item will be moved to trash.'
+                    );
+                    const confirmButtonText = form.getAttribute('data-swal-confirm-text') || (
+                        form.action.includes('force-delete') ? 'Yes, delete forever!' : 'Yes, move to trash!'
+                    );
+                    const confirmButtonColor = form.action.includes('force-delete') ? '#dc2626' : '#e11d48';
+
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: confirmButtonColor,
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: confirmButtonText,
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.dataset.confirmed = 'true';
+                            form.submit();
+                        }
+                    });
+                }
+            }, true);
+        });
+    </script>
     @yield('scripts')
 
     @stack('scripts')
