@@ -74,4 +74,25 @@ class WebProductTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Pixel Phone');
     }
+
+    #[Test]
+    public function it_can_render_product_details_when_category_or_subcategory_is_soft_deleted()
+    {
+        $category = Category::factory()->create(['name' => 'Main Category']);
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id, 'name' => 'Main Subcategory']);
+        $product = Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+            'name' => 'Orphaned Product',
+            'slug' => 'orphaned-product',
+        ]);
+
+        // Soft delete the category
+        $category->delete();
+
+        $response = $this->get(route('product.details', $product->slug));
+
+        $response->assertStatus(200);
+        $response->assertSee('Orphaned Product');
+    }
 }

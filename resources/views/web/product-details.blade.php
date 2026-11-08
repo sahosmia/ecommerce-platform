@@ -17,11 +17,19 @@
                         <span class="text-sm text-gray-500 line-through ml-2">${{ $product->price }}</span>
                     @endif
                 </div>
-                <div class="mb-4">
-                    <a href="{{ route('category.products', $product->category->slug) }}" class="text-blue-500 hover:underline">{{ $product->category->name }}</a>
-                    >
-                    <a href="{{ route('subcategory.products', $product->subcategory->slug) }}" class="text-blue-500 hover:underline">{{ $product->subcategory->name }}</a>
+                @if($product->category || $product->subcategory)
+                <div class="mb-4 text-sm text-gray-500 flex items-center gap-1.5 flex-wrap">
+                    @if($product->category)
+                        <a href="{{ route('category.products', $product->category->slug) }}" class="text-blue-500 hover:underline">{{ $product->category->name }}</a>
+                    @endif
+                    @if($product->category && $product->subcategory)
+                        <span>&gt;</span>
+                    @endif
+                    @if($product->subcategory)
+                        <a href="{{ route('subcategory.products', $product->subcategory->slug) }}" class="text-blue-500 hover:underline">{{ $product->subcategory->name }}</a>
+                    @endif
                 </div>
+                @endif
                 <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Add to Cart</button>
             </div>
         </div>

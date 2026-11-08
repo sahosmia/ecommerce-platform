@@ -22,6 +22,7 @@
             width: 5rem;
         }
     </style>
+    
 </head>
 
 <body class="bg-gray-100 min-h-screen flex">

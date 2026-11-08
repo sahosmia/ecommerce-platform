@@ -98,6 +98,36 @@ class CategoryTest extends TestCase
     }
 
     #[Test]
+    public function it_cannot_soft_delete_a_category_if_it_has_subcategories()
+    {
+        $category = Category::factory()->create();
+        Subcategory::factory()->create(['category_id' => $category->id]);
+
+        $response = $this->delete(route('admin.categories.destroy', $category));
+
+        $response->assertRedirect(route('admin.categories.index'));
+        $response->assertSessionHas('error', 'Category cannot be moved to trash because it has associated products or subcategories.');
+        $this->assertNotSoftDeleted('categories', ['id' => $category->id]);
+    }
+
+    #[Test]
+    public function it_cannot_soft_delete_a_category_if_it_has_products()
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+        ]);
+
+        $response = $this->delete(route('admin.categories.destroy', $category));
+
+        $response->assertRedirect(route('admin.categories.index'));
+        $response->assertSessionHas('error', 'Category cannot be moved to trash because it has associated products or subcategories.');
+        $this->assertNotSoftDeleted('categories', ['id' => $category->id]);
+    }
+
+    #[Test]
     public function it_can_display_the_trash_page()
     {
         Category::factory()->create()->delete(); // Create a soft-deleted category
