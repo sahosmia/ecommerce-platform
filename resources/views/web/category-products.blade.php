@@ -14,7 +14,7 @@
         @else
             <div class="flex flex-wrap gap-4">
                 @foreach($category->subcategories as $subcategory)
-                    <a href="{{ route('subcategory.products', $subcategory->slug) }}" class="bg-white rounded-lg shadow-md p-4 hover:bg-gray-200">
+                    <a href="{{ route('categories.view', [$category->slug, $subcategory->slug]) }}" class="bg-white rounded-lg shadow-md p-4 hover:bg-gray-200">
                         <span class="text-lg font-semibold text-gray-800">{{ $subcategory->name }}</span>
                     </a>
                 @endforeach

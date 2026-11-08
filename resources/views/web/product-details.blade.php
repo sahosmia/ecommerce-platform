@@ -18,9 +18,9 @@
                     @endif
                 </div>
                 <div class="mb-4">
-                    <a href="{{ route('category.products', $product->category->slug) }}" class="text-blue-500 hover:underline">{{ $product->category->name }}</a>
+                    <a href="{{ route('categories.view', $product->category->slug) }}" class="text-blue-500 hover:underline">{{ $product->category->name }}</a>
                     >
-                    <a href="{{ route('subcategory.products', $product->subcategory->slug) }}" class="text-blue-500 hover:underline">{{ $product->subcategory->name }}</a>
+                    <a href="{{ route('categories.view', [$product->category->slug, $product->subcategory->slug]) }}" class="text-blue-500 hover:underline">{{ $product->subcategory->name }}</a>
                 </div>
                 <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Add to Cart</button>
             </div>

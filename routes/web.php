@@ -24,6 +24,11 @@ Route::get('/', [WebProductController::class, 'index'])->name('home');
 
 Route::get('/product/{slug}', [WebProductController::class, 'show'])->name('product.details');
 
+// Unified SEO-friendly categories and subcategories route: /categories/{categorySlug}/{subcategorySlug?}
+Route::get('/categories/{categorySlug}/{subcategorySlug?}', [WebCategoryController::class, 'showCategoryOrSubcategory'])
+    ->name('categories.view');
+
+// Legacy routes preserved for backwards-compatibility
 Route::get('/category/{slug}', [WebCategoryController::class, 'showProducts'])->name('category.products');
 
 Route::get('/subcategory/{slug}', [WebSubcategoryController::class, 'showProducts'])->name('subcategory.products');

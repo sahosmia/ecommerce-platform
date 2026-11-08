@@ -30,6 +30,9 @@
                     Name / Slug
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Subcategories
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                 </th>
             </tr>
@@ -40,6 +43,22 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-gray-900">{{ $category->name }}</div>
                     <div class="text-xs text-gray-500">{{ $category->slug }}</div>
+                </td>
+
+                <td class="px-6 py-4">
+                    @if($category->subcategories->isNotEmpty())
+                        <div class="flex flex-wrap gap-1 max-w-md">
+                            @foreach($category->subcategories as $sub)
+                                <a href="{{ route('admin.subcategories.show', $sub) }}"
+                                   class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
+                                    {{ $sub->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                        <span class="text-xs text-gray-400 mt-1 block">Total: {{ $category->subcategories->count() }}</span>
+                    @else
+                        <span class="text-xs text-gray-400 italic">No subcategories</span>
+                    @endif
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -65,7 +84,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="2" class="px-6 py-4 text-center text-gray-500">
+                <td colspan="3" class="px-6 py-4 text-center text-gray-500">
                     No active categories found.
                 </td>
             </tr>

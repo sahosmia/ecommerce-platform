@@ -23,7 +23,7 @@
 
                     @foreach ($categories as $category)
                     <div class="relative group">
-                        <a href="{{ route('category.products', $category->slug) }}"
+                        <a href="{{ route('categories.view', $category->slug) }}"
                             class="text-gray-600 hover:text-gray-700 mx-4 py-2 flex items-center">
                             {{ $category->name }}
                             @if ($category->subcategories->isNotEmpty())
@@ -38,7 +38,7 @@
                         <div
                             class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 hidden group-hover:block">
                             @foreach ($category->subcategories as $subcategory)
-                            <a href="{{ route('subcategory.products', $subcategory->slug) }}"
+                            <a href="{{ route('categories.view', [$category->slug, $subcategory->slug]) }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ $subcategory->name
                                 }}</a>
                             @endforeach

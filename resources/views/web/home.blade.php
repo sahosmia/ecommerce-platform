@@ -18,9 +18,9 @@
                 <div class="flex items-center justify-between border-b pb-3 mb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">{{ $subcategory->name }}</h2>
-                        <span class="text-sm text-gray-500">Under <a href="{{ route('category.products', $subcategory->category->slug) }}" class="text-indigo-600 hover:underline">{{ $subcategory->category->name }}</a></span>
+                        <span class="text-sm text-gray-500">Under <a href="{{ route('categories.view', $subcategory->category->slug) }}" class="text-indigo-600 hover:underline">{{ $subcategory->category->name }}</a></span>
                     </div>
-                    <a href="{{ route('subcategory.products', $subcategory->slug) }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+                    <a href="{{ route('categories.view', [$subcategory->category->slug, $subcategory->slug]) }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
                         View All ({{ $subcategory->products->count() }}) &rarr;
                     </a>
                 </div>

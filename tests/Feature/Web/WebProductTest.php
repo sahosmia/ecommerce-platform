@@ -71,4 +71,54 @@ class WebProductTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Pixel Phone');
     }
+
+    /** @test */
+    public function it_can_display_category_products_via_unified_categories_route()
+    {
+        $category = Category::factory()->create([
+            'name' => 'Fashion & Apparel',
+            'slug' => 'fashion-apparel',
+        ]);
+        $subcategory = Subcategory::factory()->create([
+            'category_id' => $category->id,
+            'name' => 'Shoes',
+            'slug' => 'shoes',
+        ]);
+        $product = Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+            'name' => 'Leather Boots',
+        ]);
+
+        $response = $this->get(route('categories.view', $category->slug));
+
+        $response->assertStatus(200);
+        $response->assertSee('Fashion & Apparel');
+        $response->assertSee('Leather Boots');
+    }
+
+    /** @test */
+    public function it_can_display_subcategory_products_via_unified_categories_route()
+    {
+        $category = Category::factory()->create([
+            'name' => 'Electronics',
+            'slug' => 'electronics',
+        ]);
+        $subcategory = Subcategory::factory()->create([
+            'category_id' => $category->id,
+            'name' => 'Tablets',
+            'slug' => 'tablets',
+        ]);
+        $product = Product::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+            'name' => 'iPad Pro',
+        ]);
+
+        $response = $this->get(route('categories.view', [$category->slug, $subcategory->slug]));
+
+        $response->assertStatus(200);
+        $response->assertSee('Tablets');
+        $response->assertSee('iPad Pro');
+    }
 }
