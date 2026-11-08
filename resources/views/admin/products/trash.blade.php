@@ -77,24 +77,26 @@
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <form action="{{ route('admin.products.restore', $product->id) }}" method="POST"
-                        class="inline-block mr-2"
-                        onsubmit="return confirm('Are you sure you want to restore this product?');">
-                        @csrf
-                        <button type="submit" class="text-green-600 hover:text-green-900 font-bold">
-                            Restore
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-3">
+                        <form action="{{ route('admin.products.restore', $product->id) }}" method="POST"
+                            class="inline-block"
+                            onsubmit="return confirm('Are you sure you want to restore this product?');">
+                            @csrf
+                            <button type="submit" class="text-green-600 hover:text-green-900" title="Restore Product">
+                                <i class="fa-solid fa-rotate-left text-base"></i>
+                            </button>
+                        </form>
 
-                    <form action="{{ route('admin.products.force-delete', $product->id) }}" method="POST"
-                        class="inline-block"
-                        onsubmit="return confirm('Are you absolutely sure you want to permanently delete this product? This action cannot be undone.');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">
-                            Permanent Delete
-                        </button>
-                    </form>
+                        <form action="{{ route('admin.products.force-delete', $product->id) }}" method="POST"
+                            class="inline-block"
+                            onsubmit="return confirm('Are you absolutely sure you want to permanently delete this product? This action cannot be undone.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900" title="Permanent Delete">
+                                <i class="fa-solid fa-trash-can text-base"></i>
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
