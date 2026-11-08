@@ -72,6 +72,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if ($category->products()->exists() || $category->subcategories()->exists()) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Category cannot be moved to trash because it has associated products or subcategories.');
+        }
+
         $category->delete();
 
         return redirect()->route('admin.categories.index')

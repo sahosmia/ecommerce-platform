@@ -46,21 +46,23 @@ class ProductController extends Controller
             })
             ->get();
 
-            return $products;
-
         return view('web.home', compact('products', 'subcategories'));
     }
 
-
-
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::with(['category', 'subcategory'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
+            ->whereHas('category')
+            ->whereHas('subcategory')
             ->inRandomOrder()
             ->limit(5)
             ->get();
+
         return view('web.product-details', compact('product', 'relatedProducts'));
     }
 }

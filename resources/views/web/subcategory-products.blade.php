@@ -1,7 +1,7 @@
 @extends('layouts.web')
 
 @section('title')
-{{ $subcategory->name }} - {{ $subcategory->category->name }}
+{{ $subcategory->name }}{{ $subcategory->category ? ' - ' . $subcategory->category->name : '' }}
 @endsection
 
 @section('content')
